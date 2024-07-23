@@ -1,0 +1,66 @@
+{% extends "navbar.html" %}
+
+{% block content %}
+<div id="content">
+    <div
+        style="margin-bottom: 20px; background-color: #fcfcfc; padding: 5px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+    <h2 style="color: #2B3467; font-weight: 200px; padding: 5px;">Kumpulan Berita Hoax</h2>
+</div>
+<div
+    style="margin-bottom: 20px; background-color: #fcfcfc; padding: 5px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+{% for news_item in berita_hoax.items %}
+<div class="news-item" style="margin: 10px; padding-bottom: 2px;">
+    <h5><a href="{{ news_item.Link }}">{{ news_item.Headline }}</a></h5>
+    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#808080" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+    <span style="font-size: small;">{{ news_item.Date }}</span>
+    <p>{{ news_item.Content[:340] }}{{ '...' if news_item.Content|length > 340 else '' }}</p>
+</div>
+{% endfor %}
+<nav aria-label="Page navigation example" style="text-align: center;">
+    <ul class="pagination" style="color: black; display: inline-flex; margin-top: 10px;">
+        {% if berita_hoax.has_prev %}
+        <li class="page-item">
+            <a class="page-link" href="?page=1" aria-label="First">
+                <span aria-hidden="true">&laquo;</span>
+                <span class="sr-only">First</span>
+            </a>
+        </li>
+        <li class="page-item">
+            <a class="page-link" href="?page={{ berita_hoax.prev_num }}" aria-label="Previous">
+                <span aria-hidden="true">&lt;</span>
+                <span class="sr-only">Previous</span>
+            </a>
+        </li>
+        {% endif %}
+
+        {% for page_num in berita_hoax.iter_pages() %}
+        {% if page_num %}
+        <li class="page-item {% if page_num == berita_hoax.page %}active{% endif %}">
+            <a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <span class="page-link">&hellip;</span>
+        </li>
+        {% endif %}
+        {% endfor %}
+
+        {% if berita_hoax.has_next %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ berita_hoax.next_num }}" aria-label="Next">
+                <span aria-hidden="true">&gt;</span>
+                <span class="sr-only">Next</span>
+            </a>
+        </li>
+        <li class="page-item">
+            <a class="page-link" href="?page={{ berita_hoax.pages }}" aria-label="Last">
+                <span aria-hidden="true">&raquo;</span>
+                <span class="sr-only">Last</span>
+            </a>
+        </li>
+        {% endif %}
+    </ul>
+</nav>
+</div>
+</div>
+{% endblock %}
